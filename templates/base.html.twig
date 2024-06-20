@@ -12,11 +12,14 @@
         {% endblock %}
     </head>
     <body>
-        <nav>
+        <nav class="sticky">
             <span><a href="#">Test1</a></span>
             <span><a href="#">Test2</a></span>
             <span><a href="#">Test3</a></span>
+            <img src="https://cdn.discordapp.com/avatars/1063583541641871440/be23417ba063f70ce351453a97ebde99.webp?size=128" />
         </nav>
-        {% block body %}{% endblock %}
+        <main>
+            {% block body %}{% endblock %}
+        </main>
     </body>
 </html>
