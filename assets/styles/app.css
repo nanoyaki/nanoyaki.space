@@ -1,3 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+:root {
+    --background-color: #19091B;
+    --elevated-background-color: #331236;
+    --text-color: #F3F1F3;
+    --secondary-text-color: #B4A7B4;
+    --accent-color: #DA3C97;
+    --accent-highlighted-color: #DE54A5;
+    
+    size: 16px;
+}
+
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+a:link {
+    text-decoration: inherit;
+    color: inherit;
+    cursor: auto;
+}
+
+a:visited {
+    text-decoration: inherit;
+    color: inherit;
+    cursor: auto;
+}
+
+a:hover {
+    color: var(--accent-highlighted-color);
+}
+
 body {
-    background-color: skyblue;
+    background-color: var(--background-color);
+}
+
+nav {
+    background-color: var(--elevated-background-color);
+    min-height: 6rem;
+    min-width: auto;
+    display: flex;
+    padding: 1rem;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+}
+
+nav span {
+    size: 1.25rem;
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+nav :last-child {
+    margin-left: auto;
+}
+
+nav img {
+    min-height: 4rem;
+    max-height: 4rem;
+    min-width: 4rem;
+    max-width: 4rem;
+    border-radius: 2rem;
 }
