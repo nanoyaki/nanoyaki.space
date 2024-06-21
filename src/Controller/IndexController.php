@@ -13,7 +13,7 @@ class IndexController extends AbstractController
 {
     public function __construct(private readonly EntityManagerInterface $em) {}
 
-    #[Route('/index', name: 'app_index')]
+    #[Route('/', name: 'app_index')]
     public function index(): Response
     {
         $post = new BlogPost("This is a title", "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.   
@@ -23,7 +23,7 @@ class IndexController extends AbstractController
         $post2 = clone $post;
         $post3 = clone $post;
 
-        $post->setContent('Mraooooo~');
+        $post->setContent('~');
 
         $post2->togglePin();
 

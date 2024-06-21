@@ -1,0 +1,1 @@
+rsync --exclude=.env -r --info=progress2 --info=name0 . ubuntu@nanoyaki.space:/var/www/nanoyaki.space/

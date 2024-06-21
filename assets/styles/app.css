@@ -42,6 +42,7 @@ body {
     padding-left: 8rem;
     padding-right: 8rem;
     background-color: var(--background-color);
+    transition: ease all 250ms;
 }
 
 nav {
@@ -83,6 +84,19 @@ body main {
     flex-direction: row;
     justify-content: center;
     padding: 4rem;
+}
+
+@media (max-width: 1200px) {
+    body {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+}
+
+@media (max-width: 800px) {
+    body main {
+        flex-direction: column-reverse;
+    }
 }
 
 .timeline-content {
@@ -157,10 +171,7 @@ body main {
 }
 
 .small-blog-post .metadata-frame .title-frame .title {
-    display: flex;
-    flex-direction: row;
     align-items: baseline;
-    justify-content: start;
     gap: 0.5rem;
     font-size: 1.5rem;
     font-weight: 600;
@@ -182,6 +193,10 @@ body main {
     visibility: hidden;
 } 
 
+.timeline :first-child .small-blog-post {
+    margin-top: 0px;
+} 
+
 .timeline :last-child .timeline-dot:after {
     visibility: hidden;
 } 
@@ -198,7 +213,7 @@ body main {
 .timeline-content .timeline-dot:before,
 .timeline-content .timeline-dot:after {
     flex-grow: 1;
-    display: block;
+    display: inline-block;
     content: '';
     width: 0.5rem;
     min-width: 0.375rem;
@@ -253,7 +268,23 @@ body main {
     gap: 2rem;
 }
 
-.friends {
+.friend {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    align-self: stretch;
+    align-items: center;
+    justify-content: start;
+}
+
+.friends-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+}
+
+.vertical-container-with-title {
     display: flex;
     align-self: stretch;
     background-color: var(--elevated-background-color);
@@ -266,17 +297,32 @@ body main {
     max-height: fit-content;
 }
 
-.friends h3 {
+.vertical-container-with-title h3 {
     font-size: 1.5rem;
     color: var(--accent-color);
     font-weight: 600;
 }
 
-.friend {
+.socials-container {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
+    max-height: fit-content;
     gap: 1rem;
-    align-self: stretch;
+}
+
+.social {
+    min-height: 3rem;
+    min-width: 3rem;
+    max-height: 3rem;
+    max-width: 3rem;
+    border-radius: 1.5rem;
+    background-color: var(--accent-color);
+    display: flex;
     align-items: center;
-    justify-content: start;
+    justify-content: center;
+}
+
+.social:hover {
+    background-color: var(--accent-highlighted-color);
 }
