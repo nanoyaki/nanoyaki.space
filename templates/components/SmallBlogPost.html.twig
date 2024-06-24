@@ -1,3 +1,4 @@
+<!--suppress CheckEmptyScriptTag -->
 <div class="small-blog-post">
     <div class="metadata-frame">
         <div class="title-frame">
@@ -37,7 +38,7 @@
         {% endif %}
     </div>
     <p>
-        {{ post.content }}
+        {{ post.digest }}
     </p>
     {% if hasJumpButton %}
         <a href="#post_{{ post.id }}" class="button">

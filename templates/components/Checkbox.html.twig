@@ -1,0 +1,8 @@
+<label class="checkbox">
+    <input
+        type="checkbox"
+        {% if name %} name="{{ name }}" {% endif %}
+        {% if checked %} checked {% endif %}
+    />
+    <span>{% block content %}{% endblock %}</span>
+</label>

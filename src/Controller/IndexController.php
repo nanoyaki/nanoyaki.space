@@ -2,40 +2,49 @@
 
 namespace App\Controller;
 
-use App\Entity\BlogPost;
-use DateTime;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\Post;
+use App\Entity\User;
+use App\Repository\PostRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 class IndexController extends AbstractController
 {
-    public function __construct(private readonly EntityManagerInterface $em) {}
+    public function __construct(
+        private readonly PostRepository $postRepository
+    ) {}
 
     #[Route('/', name: 'app_index')]
     public function index(): Response
     {
-        $post = new BlogPost("This is a title", "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.   
+        $user = $this->getUser();
 
-        Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet,", false);
+        if ($user instanceof User) {
+            $content = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.";
 
-        $post2 = clone $post;
-        $post3 = clone $post;
+            $post = new Post(
+                $this->getUser(),
+                "This is a test title",
+                $content,
+                $content
+            );
 
-        $post->setContent('~');
+            $post2 = clone $post;
+            $post3 = clone $post;
 
-        $post2->togglePin();
+            $post->setDigest('Meowsers~');
 
-        $posts = [ $post, $post2, $post3 ];
+            $post2->togglePin();
 
-        foreach ($posts as $post) {
-            $this->em->persist($post);
-            $this->em->flush();
+            $posts = [ $post, $post2, $post3 ];
+
+            foreach ($posts as $post) {
+                $this->postRepository->save($post);
+            }
         }
 
         return $this->render('index/index.html.twig', [
-            'posts' => $posts,
+            'posts' => $this->postRepository->getTenPosts(),
         ]);
     }
 }

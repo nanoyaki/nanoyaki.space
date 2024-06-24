@@ -2,17 +2,22 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\Post;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-class BlogPostController extends AbstractController
+class PostController extends AbstractController
 {
     #[Route('/blog/post/{id}', name: 'app_blog_post')]
     public function index(int $id): Response
     {
+        $post = $this->getUser()
+            ->getPosts()
+            ->filter(fn (Post $post) => $post->getId() === $id)
+            ->first();
+
         return $this->render('blog_post/index.html.twig', [
-            'controller_name' => 'BlogPostController',
+            'post' => $post
         ]);
     }
 }

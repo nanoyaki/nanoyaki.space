@@ -1,0 +1,7 @@
+<div class="labeled-input">
+    {% if property %}
+        {{ form_label(property) }}
+        {{ form_widget(property) }}
+    {% endif %}
+    {% block content %}{% endblock %}
+</div>

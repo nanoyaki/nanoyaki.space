@@ -31,6 +31,7 @@
         "symfony/process": "7.1.*",
         "symfony/property-access": "7.1.*",
         "symfony/property-info": "7.1.*",
+        "symfony/requirements-checker": "^2.0",
         "symfony/runtime": "7.1.*",
         "symfony/security-bundle": "7.1.*",
         "symfony/serializer": "7.1.*",
@@ -78,7 +79,8 @@
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd",
-            "importmap:install": "symfony-cmd"
+            "importmap:install": "symfony-cmd",
+            "requirements-checker": "script"
         },
         "post-install-cmd": [
             "@auto-scripts"
@@ -97,6 +99,8 @@
         }
     },
     "require-dev": {
+        "phpstan/phpstan": "^1.11",
+        "phpstan/phpstan-symfony": "^1.4",
         "phpunit/phpunit": "^9.5",
         "symfony/browser-kit": "7.1.*",
         "symfony/css-selector": "7.1.*",

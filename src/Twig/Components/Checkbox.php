@@ -2,12 +2,11 @@
 
 namespace App\Twig\Components;
 
-use App\Entity\Post;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
 #[AsTwigComponent]
-final class SmallBlogPost
+final class Checkbox
 {
-    public Post $post;
-    public ?bool $hasJumpButton = false;
+    public ?string $name = null;
+    public bool $checked = false;
 }

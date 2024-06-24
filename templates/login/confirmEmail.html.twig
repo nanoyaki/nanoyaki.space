@@ -1,0 +1,40 @@
+{% extends 'login/loggedOutBase.html.twig' %}
+
+{% block title %}Login - nanoyaki.space{% endblock %}
+
+{% set hasWarningFlashes = (app.flashes('warning') is not empty) %}
+
+{% block head %}
+    <!-- make this a random image that is in the db -->
+    <style>
+        .login-background-image {
+            background-image: url("{{ asset('images/login.jpg') }}");
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <main>
+        <div class="login-form-container">
+            {% if hasWarningFlashes %}
+                <div class="flash-message flash-failure">
+                    {% for message in app.flashes('warning') %}
+                        {{ message }}<br>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            {{ form_start(confirmEmailForm) }}
+                <twig:LabeledInput property="{{ confirmEmailForm.token }}" />
+
+                <twig:Csrf name="email_confirmation" />
+
+                {{ form_row(confirmEmailForm.register) }}
+            {{ form_end(confirmEmailForm) }}
+        </div>
+        <div class="login-background-image">
+            <svg viewBox="0 0 100 1080" xmlns="http://www.w3.org/2000/svg">
+                <path d="M52.6616 810C103.929 701 112.61 636.5 52.6616 540C-7.28678 443.5 -8.29372 349.5 52.6616 270C113.617 190.5 117.906 96.5 52.6616 0H0V1080H52.6616C-3.32798 982 1.39424 919 52.6616 810Z" fill="#19091B"></path>
+            </svg>
+        </div>
+    </main>
+{% endblock %}
