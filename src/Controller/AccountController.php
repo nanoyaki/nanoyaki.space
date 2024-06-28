@@ -35,7 +35,7 @@ class AccountController extends AbstractController
             return $this->redirectToRoute(LoginController::LOGIN);
         }
 
-        if ($user->getEmailCofirmation()->isConfirmed()) {
+        if ($user->getEmailConfirmation()->isConfirmed()) {
             return $this->redirectToRoute(IndexController::INDEX);
         }
 
@@ -49,13 +49,13 @@ class AccountController extends AbstractController
             $token = $data->getToken();
         }
 
-        if (is_null($token)) {
+        if ($token === null) {
             return $this->render('login/confirmEmail.html.twig', [
                 'confirmEmailForm' => $form
             ]);
         }
 
-        $userEmailConfirmation = $user->getEmailCofirmation();
+        $userEmailConfirmation = $user->getEmailConfirmation();
         if ($userEmailConfirmation->tryVerification($token)) {
             $emailConfirmRepository->save($userEmailConfirmation);
 
@@ -84,7 +84,7 @@ class AccountController extends AbstractController
         }
 
         $emailConfirmationRepository->save(
-            $user->getEmailCofirmation()->regenerateToken()
+            $user->getEmailConfirmation()->regenerateToken()
         );
 
         try {

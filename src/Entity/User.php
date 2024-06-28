@@ -13,7 +13,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+final class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -23,7 +23,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private string $password;
 
-    #[ORM\OneToOne(targetEntity: EmailConfirmation::class, cascade: ['persist'])]
+    #[ORM\OneToOne(targetEntity: EmailConfirmation::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(name: 'email_confirmation_id', referencedColumnName: 'id')]
     private readonly EmailConfirmation $emailConfirmation;
 
@@ -62,24 +62,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->id;
     }
 
-    public function getUsername(): ?string
+    public function getUsername(): string
     {
         return $this->username;
     }
 
-    public function setUsername(string $username): static
+    public function setUsername(string $username): self
     {
         $this->username = $username;
 
         return $this;
     }
 
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
     }
 
-    public function setEmail(string $email): static
+    public function setEmail(string $email): self
     {
         $this->email = $email;
 
@@ -105,7 +105,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @param array<string> $roles
      */
-    public function setRoles(array $roles): static
+    public function setRoles(array $roles): self
     {
         $this->roles = $roles;
 
@@ -117,14 +117,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->password;
     }
 
-    private function setPassword(string $password): static
+    private function setPassword(string $password): self
     {
         $this->password = $password;
 
         return $this;
     }
 
-    private function renewPassword(UserPasswordHasherInterface $passwordHasher, string $password): static
+    private function renewPassword(UserPasswordHasherInterface $passwordHasher, string $password): self
     {
         $hashedPassword = $passwordHasher->hashPassword($this, $password);
         return $this->setPassword($hashedPassword);
@@ -134,16 +134,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * Only used to set a new **hashed** password
      *
      * @param string $hashedPassword
-     * @return $this
+     * @return self
      */
-    public function upgradePassword(string $hashedPassword): static
+    public function upgradePassword(string $hashedPassword): self
     {
         return $this->setPassword($hashedPassword);
     }
 
     public function eraseCredentials(): void
     {
-
+        // used to erase temporary sensitive data on the entity
     }
 
     /**
@@ -162,7 +162,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->images;
     }
 
-    public function getEmailCofirmation(): EmailConfirmation
+    public function getEmailConfirmation(): EmailConfirmation
     {
         return $this->emailConfirmation;
     }
@@ -170,12 +170,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @param RegisterData $registerData
      * @param UserPasswordHasherInterface $passwordHasher
-     * @param array<string> $roles
-     * @return static
+     * @param array<Role> $roles
+     * @return self
      */
-    public static function register(RegisterData $registerData, UserPasswordHasherInterface $passwordHasher, array $roles = []): static
+    public static function register(RegisterData $registerData, UserPasswordHasherInterface $passwordHasher, array $roles = []): self
     {
-        $user = new static(
+        $roles = array_map(fn (Role $role) => $role->value, $roles);
+
+        $user = new self(
             $registerData->getUsername(),
             $registerData->getEmail(),
             $roles

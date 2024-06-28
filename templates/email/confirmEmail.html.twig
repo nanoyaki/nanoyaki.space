@@ -1,30 +1,18 @@
-{% set linkWithCode = path('app_account_confirm_email', { code: token }) %}
-{% set link = path('app_account_confirm_email') %}
+{% extends 'email/base.html.twig' %}
 
-<!DOCTYPE html>
-<html lang="en">
+{% set linkWithCode = url('app_account_confirm_email', { code: token }, ) %}
+{% set link = url('app_account_confirm_email') %}
 
-<head>
-    <meta charset="UTF-8" />
-    <title>Welcome to nanoyaki.space</title>
-</head>
-
-<body>
-    <div>
+{% block body %}
+    <div class="email-part">
         <h3>Welcome to nanoyaki.space!</h3>
-
-        <!--
-            TODO: add proper styling
-        -->
+        <br>
         <p>
             Thank you for signing up at nanoyaki.space!<br>
-            To confirm your E-Mail, please enter the code {{ token }} at 
-            <a href="{{ link }}">
-                {{ link }}
-            </a><br>
+            To confirm your E-Mail, please enter this code:<br><br>
+            <span class="highlighted-text big-text center">{{ token }}</span><br><br>
+            at <a href="{{ link }}">{{ link }}</a><br>
             or click this link to confirm it directly: <a href="{{ linkWithCode }}">{{ linkWithCode }}</a>
         </p>
-    <div>
-</body>
-
-</html>
+    </div>
+{% endblock %}

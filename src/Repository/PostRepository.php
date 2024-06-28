@@ -17,15 +17,15 @@ class PostRepository extends ServiceEntityRepositoryProxy
     }
 
     /**
-     * @param ?int $index
+     * @param ?int $belowId
      * @return array<Post>
      */
-    public function getTenPosts(?int $index = null): array
+    public function getTenPosts(?int $belowId = null): array
     {
-        if ($index !== null) {
+        if ($belowId !== null) {
             $qb = $this->createQueryBuilder('p')
                 ->where('p.id < :index')
-                ->setParameter('index', $index)
+                ->setParameter('index', $belowId)
                 ->setMaxResults(10);
         } else {
             $qb = $this->createQueryBuilder('p')
@@ -33,6 +33,15 @@ class PostRepository extends ServiceEntityRepositoryProxy
         }
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function getPostById(int $id): ?Post
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 
     public function save(Post $post): void

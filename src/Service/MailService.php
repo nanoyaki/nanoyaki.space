@@ -24,7 +24,7 @@ class MailService
         $userEmail = $user->getEmail();
         $username = $user->getUsername();
 
-        $confirmationCode = $user->getEmailCofirmation()->getToken();
+        $confirmationCode = $user->getEmailConfirmation()->getToken();
 
         $mail = (new TemplatedEmail())
             ->to(new Address($userEmail, $username))

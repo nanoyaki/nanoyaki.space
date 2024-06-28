@@ -38,7 +38,7 @@ class UserRepository extends ServiceEntityRepositoryProxy implements PasswordUpg
         return $this->getUserByEmailAddress($identifier);
     }
 
-    public function getUserByUsername(string $username)
+    public function getUserByUsername(string $username): ?User
     {
         return $this->createQueryBuilder('u')
             ->where('u.username = :username')

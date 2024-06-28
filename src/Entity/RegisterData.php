@@ -2,23 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\RegisterDataRepository;
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: RegisterDataRepository::class)]
 class RegisterData
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
-
     #[Assert\NotBlank]
     #[Assert\Email(
         message: 'The email {{ value }} is not a valid email.'
     )]
-    #[ORM\Column(length: 180)]
     private string $email;
 
     #[Assert\Length(
@@ -32,7 +23,6 @@ class RegisterData
         message: 'Usernames are limited to characters from a-Z'
         . ', numbers, and the 3 special characters "_", "-", and "."'
     )]
-    #[ORM\Column(length: 32)]
     private string $username;
 
     #[Assert\Regex(
@@ -46,13 +36,7 @@ class RegisterData
         minMessage: 'Passwords must be at least 8 characters long'
         . ' and must not be longer than 64 characters'
     )]
-    #[ORM\Column(length: 64)]
     private string $password;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getEmail(): string
     {

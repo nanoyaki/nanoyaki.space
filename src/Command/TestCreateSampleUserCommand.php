@@ -28,7 +28,6 @@ class TestCreateSampleUserCommand extends Command
 
     public function __construct(
         private readonly UserRepository $userRepository,
-        private readonly EmailConfirmationRepository $emailConfirmationRepository,
         private readonly UserPasswordHasherInterface $passwordHasher
     )
     {
@@ -95,15 +94,15 @@ class TestCreateSampleUserCommand extends Command
             $isAdmin ? [ Role::Admin ] : []
         );
 
-        $emailConfirmation = $user->getEmailCofirmation();
+        $emailConfirmation = $user->getEmailConfirmation();
         $verificationToken = $emailConfirmation->getToken();
         if (!$emailConfirmation->tryVerification($verificationToken)) {
             $io->error('Something went horribly wrong');
             return Command::FAILURE;
         }
-        $this->emailConfirmationRepository->save($emailConfirmation);
 
         $this->userRepository->save($user);
+        $io->success("Successfully created user {$user->getUsername()}");
 
         return Command::SUCCESS;
     }

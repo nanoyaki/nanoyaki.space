@@ -95,6 +95,7 @@ class TestCreateSamplePostCommand extends Command
         );
 
         $this->postRepository->save($post);
+        $io->success("Successfully created post with title {$post->getTitle()}");
 
         return Command::SUCCESS;
     }

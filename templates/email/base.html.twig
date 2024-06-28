@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Email from nanoyaki.space</title>
+    {% block stylesheets %}
+        {% block importmap %}{{ importmap('email') }}{% endblock %}
+    {% endblock %}
+</head>
+
+<body>
+    <main>
+        {% block body %}{% endblock %}
+    </main>
+</body>
+
+</html>
