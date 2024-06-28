@@ -33,15 +33,38 @@ class UserRepository extends ServiceEntityRepositoryProxy implements PasswordUpg
         $this->getEntityManager()->flush();
     }
 
+    public function getUserByIdentifier(string $identifier): ?User
+    {
+        return $this->getUserByEmailAddress($identifier);
+    }
+
+    public function getUserByUsername(string $username)
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.username = :username')
+            ->setParameter('username', $username)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function getUserByEmailAddress(string $email): ?User
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.email = :email')
+            ->setParameter('email', $email)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     public function userExists(string $email, ?string $username = null): bool
     {
         $qb = $this->createQueryBuilder('u')
-            ->where('u.email == :email')
+            ->where('u.email = :email')
             ->setParameter('email', $email);
 
         if ($username !== null) {
             $qb = $qb
-                ->orWhere('u.username == :username')
+                ->orWhere('u.username = :username')
                 ->setParameter('username', $username);
         }
 

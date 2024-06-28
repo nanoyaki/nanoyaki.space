@@ -25,7 +25,7 @@ class EmailConfirmation
 
     public function __construct()
     {
-        $this->regenerate();
+        $this->regenerateToken();
     }
 
     public function getId(): ?int
@@ -33,12 +33,21 @@ class EmailConfirmation
         return $this->id;
     }
 
+    public function getToken(): string
+    {
+        if ($this->isTokenExpired()) {
+            $this->regenerateToken();
+        }
+
+        return $this->token;
+    }
+
     public function isConfirmed(): bool
     {
         return $this->isConfirmed;
     }
 
-    public function regenerate(): static
+    public function regenerateToken(): static
     {
         $this->token = sprintf("%06d", mt_rand(1, 999999));
         $this->validUntil = new DateTimeImmutable('+15 minutes');
@@ -46,15 +55,21 @@ class EmailConfirmation
         return $this;
     }
 
-    public function tryVerification(string $token): static
+    /**
+     * Returns a bool to indicate verification success
+     *
+     * @param string $token
+     * @return bool
+     */
+    public function tryVerification(string $token): bool
     {
-        $this->isConfirmed = $token === $this->token && !$this->needsRegeneration();
+        $this->isConfirmed = $token === $this->token && !$this->isTokenExpired();
 
-        return $this;
+        return $this->isConfirmed;
     }
 
-    private function needsRegeneration(): bool
+    private function isTokenExpired(): bool
     {
-        return $this->validUntil->getTimestamp() < (new DateTimeImmutable())->getTimestamp();
+        return $this->validUntil->getTimestamp() < (new DateTimeImmutable())->getTimestamp() && !$this->isConfirmed;
     }
 }

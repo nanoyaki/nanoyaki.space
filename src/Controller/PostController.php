@@ -8,7 +8,10 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class PostController extends AbstractController
 {
-    #[Route('/blog/post/{id}', name: 'app_blog_post')]
+    private const ROOT = 'app_blog_';
+    public const POST = self::ROOT . 'post';
+
+    #[Route('/blog/post/{id}', name: self::POST)]
     public function index(int $id): Response
     {
         $post = $this->getUser()

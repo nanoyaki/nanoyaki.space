@@ -10,11 +10,14 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class IndexController extends AbstractController
 {
+    private const ROOT = 'app_';
+    public const INDEX = self::ROOT . 'index';
+
     public function __construct(
         private readonly PostRepository $postRepository
     ) {}
 
-    #[Route('/', name: 'app_index')]
+    #[Route('/', name: self::INDEX)]
     public function index(): Response
     {
         $user = $this->getUser();

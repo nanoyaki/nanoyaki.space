@@ -22,14 +22,13 @@ class PostRepository extends ServiceEntityRepositoryProxy
      */
     public function getTenPosts(?int $index = null): array
     {
-        if ($index === null) {
+        if ($index !== null) {
             $qb = $this->createQueryBuilder('p')
                 ->where('p.id < :index')
                 ->setParameter('index', $index)
                 ->setMaxResults(10);
         } else {
             $qb = $this->createQueryBuilder('p')
-                ->where(1)
                 ->setMaxResults(10);
         }
 

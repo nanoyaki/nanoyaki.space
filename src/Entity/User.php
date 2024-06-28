@@ -23,7 +23,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private string $password;
 
-    #[ORM\OneToOne(targetEntity: EmailConfirmation::class)]
+    #[ORM\OneToOne(targetEntity: EmailConfirmation::class, cascade: ['persist'])]
     #[ORM\JoinColumn(name: 'email_confirmation_id', referencedColumnName: 'id')]
     private readonly EmailConfirmation $emailConfirmation;
 
