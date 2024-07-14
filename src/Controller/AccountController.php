@@ -13,30 +13,25 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/account')]
+#[Route('/account', name: 'app_account_')]
 class AccountController extends AbstractController
 {
-    private const ROOT = 'app_account_';
-    public const DASHBOARD = self::ROOT . 'dashboard';
-    public const CONFIRM_EMAIL = self::ROOT . 'confirm_email';
-    public const RESEND_CONFIRMATION_EMAIL = self::ROOT . 'resend_confirmation_email';
-
-    #[Route('/dashboard', name: self::DASHBOARD)]
+    #[Route('/dashboard', name: 'dashboard')]
     public function account(): Response
     {
-        return $this->redirectToRoute(IndexController::INDEX);
+        return $this->redirectToRoute('app_index');
     }
 
-    #[Route('/confirm-email', name: self::CONFIRM_EMAIL)]
+    #[Route('/confirm-email', name: 'confirm_email')]
     public function confirmEmail(Request $request, EmailConfirmationRepository $emailConfirmRepository): Response
     {
         $user = $this->getUser();
         if (!$user instanceof User) {
-            return $this->redirectToRoute(LoginController::LOGIN);
+            return $this->redirectToRoute('app_login');
         }
 
         if ($user->getEmailConfirmation()->isConfirmed()) {
-            return $this->redirectToRoute(IndexController::INDEX);
+            return $this->redirectToRoute('app_index');
         }
 
         $token = $request->query->has('code') ? $request->query->getString('code') : null;
@@ -50,7 +45,7 @@ class AccountController extends AbstractController
         }
 
         if ($token === null) {
-            return $this->render('login/confirmEmail.html.twig', [
+            return $this->render('login/confirm_email.html.twig', [
                 'confirmEmailForm' => $form
             ]);
         }
@@ -60,19 +55,19 @@ class AccountController extends AbstractController
             $emailConfirmRepository->save($userEmailConfirmation);
 
             $this->addFlash('success', 'Your email was verified successfully.');
-            return $this->redirectToRoute(IndexController::INDEX);
+            return $this->redirectToRoute('app_index');
         }
 
         $this->addFlash(
             'warning',
             'The code you entered is incorrect or has expired. Please send a new confirmation mail below.'
         );
-        return $this->render('login/confirmEmail.html.twig', [
+        return $this->render('login/confirm_email.html.twig', [
             'confirmEmailForm' => $form
         ]);
     }
 
-    #[Route('/resend-confirmation-mail', self::RESEND_CONFIRMATION_EMAIL)]
+    #[Route('/resend-confirmation-mail', 'resend_confirmation_email')]
     public function resendConfirmationMail(
         MailService $mailService,
         EmailConfirmationRepository $emailConfirmationRepository
@@ -80,7 +75,7 @@ class AccountController extends AbstractController
     {
         $user = $this->getUser();
         if (!$user instanceof User) {
-            return $this->redirectToRoute(LoginController::LOGIN);
+            return $this->redirectToRoute('app_login');
         }
 
         $emailConfirmationRepository->save(
@@ -90,6 +85,7 @@ class AccountController extends AbstractController
         try {
             $mailService->sendRegistrationConfirmationMail($user);
 
+            // TODO: add proper flashes on the frontend
             $this->addFlash('success', 'Confirmation mail sent!');
         } catch (TransportExceptionInterface) {
             $this->addFlash(
@@ -99,6 +95,6 @@ class AccountController extends AbstractController
             );
         }
 
-        return $this->redirectToRoute(self::CONFIRM_EMAIL);
+        return $this->redirectToRoute('app_account_confirm_email');
     }
 }

@@ -2,22 +2,30 @@
 
 namespace App\Controller;
 
-use App\Repository\PostRepository;
+use App\Entity\Post;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
+#[Route('/blog/post', name: 'app_')]
 class PostController extends AbstractController
 {
-    private const ROOT = 'app_blog_';
-    public const POST = self::ROOT . 'post';
-
-    #[Route('/blog/post/{id}', name: self::POST)]
-    public function index(int $id, PostRepository $postRepository): Response
+    #[Route('/{id}', name: 'post')]
+    public function index(
+        Request $request,
+        UrlGeneratorInterface $router,
+        #[MapEntity(id: 'id')] Post $post
+    ): Response
     {
-        $post = $postRepository->getPostById($id);
+        $previousPage = $request->headers->has('referer')
+            ? $request->headers->get('referer')
+            : $router->generate('app_index');
 
         return $this->render('blog_post/index.html.twig', [
-            'post' => $post
+            'post' => $post,
+            'previousPage' => $previousPage
         ]);
     }
 }

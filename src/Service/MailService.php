@@ -8,30 +8,24 @@ use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 
-class MailService
+readonly class MailService
 {
     public function __construct(
-        private readonly MailerInterface $mailer
+        private MailerInterface $mailer
     ) {}
 
     /**
-     * TODO: store mails in the db so that failed mails get sent later
-     *
      * @throws TransportExceptionInterface
      */
     public function sendRegistrationConfirmationMail(User $user): void
     {
-        $userEmail = $user->getEmail();
-        $username = $user->getUsername();
-
-        $confirmationCode = $user->getEmailConfirmation()->getToken();
-
         $mail = (new TemplatedEmail())
-            ->to(new Address($userEmail, $username))
-            ->subject("Please confirm your E-Mail.")
-            ->htmlTemplate('email/confirmEmail.html.twig')
+            ->from(new Address('no-reply@nanoyaki.space', 'Nanoyaki.space'))
+            ->to(new Address($user->getEmail(), $user->getUsername()))
+            ->subject("Please confirm your E-Mail")
+            ->htmlTemplate('email/confirm_email.html.twig')
             ->context([
-                'token' => $confirmationCode
+                'token' => $user->getEmailConfirmation()->getToken()
             ]);
 
         $this->mailer->send($mail);

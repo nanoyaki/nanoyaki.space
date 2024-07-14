@@ -38,7 +38,7 @@ nav img {
     border-radius: 50%;
 }
 
-body main {
+body main.multi-part {
     gap: 4rem;
     display: flex;
     flex-direction: row;
@@ -82,7 +82,7 @@ button:hover {
 }
 
 @media (max-width: 800px) {
-    body main {
+    body main.multi-part {
         flex-direction: column-reverse;
     }
 
@@ -153,7 +153,7 @@ button:hover {
     flex-direction: column;
 }
 
-.small-blog-post .metadata-frame .title-frame .date {
+.post-date {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -441,4 +441,43 @@ button:hover {
     justify-content: center;
     align-items: center;
     padding: 0;
+}
+
+.post {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    max-width: 60rem;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+    background-color: var(--elevated-background-color);
+}
+
+.post h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.post-metadata {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+a.highlighted-text:link {
+    text-decoration: inherit;
+    color: var(--accent-color);
+    cursor: pointer;
+}
+
+a.highlighted-text:visited {
+    text-decoration: inherit;
+    color: var(--accent-color);
+    cursor: pointer;
+}
+
+a.highlighted-text:hover {
+    color: var(--accent-highlighted-color);
+    cursor: pointer;
 }

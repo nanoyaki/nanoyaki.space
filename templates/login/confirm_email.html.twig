@@ -1,8 +1,6 @@
-{% extends 'login/loggedOutBase.html.twig' %}
+{% extends 'login/logged_out_base.html.twig' %}
 
 {% block title %}Login - nanoyaki.space{% endblock %}
-
-{% set hasWarningFlashes = (app.flashes('warning') is not empty) %}
 
 {% block head %}
     <!-- make this a random image that is in the db -->
@@ -16,7 +14,7 @@
 {% block body %}
     <main>
         <div class="login-form-container">
-            {% if hasWarningFlashes %}
+            {% if app.flashes('warning') is not empty %}
                 <div class="flash-message flash-failure">
                     {% for message in app.flashes('warning') %}
                         {{ message }}<br>

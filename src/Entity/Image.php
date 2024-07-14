@@ -24,7 +24,9 @@ class Image
         private string $description,
         #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'images')]
         #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id')]
-        private readonly User $user
+        private readonly User $user,
+        #[ORM\Column]
+        private bool $isUrl
     ) {
         $this->uploadDate = new DateTimeImmutable();
     }
@@ -66,5 +68,17 @@ class Image
     public function getUser(): User
     {
         return $this->user;
+    }
+
+    public function setIsUrl(bool $isUrl): static
+    {
+        $this->isUrl = $isUrl;
+
+        return $this;
+    }
+
+    public function isUrl(): bool
+    {
+        return $this->isUrl;
     }
 }

@@ -8,16 +8,14 @@ use App\Repository\PostRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
+#[Route(name: 'app_')]
 class IndexController extends AbstractController
 {
-    private const ROOT = 'app_';
-    public const INDEX = self::ROOT . 'index';
-
     public function __construct(
         private readonly PostRepository $postRepository
     ) {}
 
-    #[Route('/', name: self::INDEX)]
+    #[Route('/', name: 'index')]
     public function index(): Response
     {
         $user = $this->getUser();

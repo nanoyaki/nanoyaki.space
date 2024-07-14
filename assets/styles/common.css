@@ -14,7 +14,7 @@
     font-family: "Poppins", sans-serif;
     font-weight: 400;
     font-style: normal;
-    color: var(--text-color);
+    color: #F3F1F3;
     scroll-padding-top: 10rem;
 }
 
@@ -36,6 +36,6 @@ a:visited {
 }
 
 a:hover {
-    color: var(--accent-highlighted-color);
+    color: #DE54A5;
     cursor: pointer;
 }

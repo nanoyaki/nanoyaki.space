@@ -4,15 +4,14 @@
 <head>
     <meta charset="UTF-8" />
     <title>Email from nanoyaki.space</title>
-    {% block stylesheets %}
-        {% block importmap %}{{ importmap('email') }}{% endblock %}
-    {% endblock %}
 </head>
 
-<body>
-    <main>
-        {% block body %}{% endblock %}
-    </main>
-</body>
+{% apply inline_css(source('@styles/common.css'), source('@styles/email.css')) %}
+    <body>
+        <main>
+            {% block content %}{% endblock %}
+        </main>
+    </body>
+{% endapply %}
 
 </html>

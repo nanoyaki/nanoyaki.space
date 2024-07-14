@@ -1,4 +1,4 @@
-{% extends 'login/loggedOutBase.html.twig' %}
+{% extends 'login/logged_out_base.html.twig' %}
 
 {% block title %}Login - nanoyaki.space{% endblock %}
 
@@ -23,6 +23,11 @@
 
                 {{ form_row(registerForm.register) }}
             {{ form_end(registerForm) }}
+            {% if app.request.headers.get('referer') is not same as(url('app_login')) %}
+                <p>Already have an account? <a href="{{ path('app_login') }}" class="highlighted-text">Login</a></p>
+            {% else %}
+                <a href="{{ path('app_login') }}" class="highlighted-text">Take me back!</a>
+            {% endif %}
         </div>
         <div class="login-background-image">
             <svg viewBox="0 0 100 1080" xmlns="http://www.w3.org/2000/svg">

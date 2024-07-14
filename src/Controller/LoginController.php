@@ -11,19 +11,16 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
+#[Route('/', 'app_')]
 class LoginController extends AbstractController
 {
-    private const ROOT = 'app_';
-    public const LOGIN = self::ROOT . 'login';
-    public const REGISTER = self::ROOT . 'register';
-
-    #[Route('/login', name: self::LOGIN)]
+    #[Route('/login', name: 'login')]
     public function index(): Response
     {
         return $this->render('login/index.html.twig');
     }
 
-    #[Route('/register', name: self::REGISTER)]
+    #[Route('/register', name: 'register')]
     public function register(
         Request $request,
         UserRepository $userRepository,
@@ -46,7 +43,7 @@ class LoginController extends AbstractController
             $newUser = User::register($data, $passwordHasher);
             $userRepository->save($newUser);
 
-            return $this->redirectToRoute(AccountController::CONFIRM_EMAIL);
+            return $this->redirectToRoute('app_account_confirm_email');
         }
 
         return $this->render('login/register.html.twig', [

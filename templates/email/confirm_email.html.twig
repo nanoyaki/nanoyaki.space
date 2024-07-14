@@ -1,0 +1,19 @@
+{% extends 'email/base.html.twig' %}
+
+{% set baseUrl = 'https://' ~ app.environment is same as 'dev' ? 'dev.nanoyaki.space' : 'nanoyaki.space' %}
+{% set linkWithCode = baseUrl ~ path('app_account_confirm_email', { code: token }) %}
+{% set link = baseUrl ~ path('app_account_confirm_email', {}) %}
+
+{% block content %}
+    <div class="email-part">
+        <h3>Welcome to <a href="https://nanoyaki.space">nanoyaki.space!</a></h3>
+        <br>
+        <p>
+            Thank you for signing up at <a href="https://nanoyaki.space">nanoyaki.space!</a><br>
+            To confirm your E-Mail, please enter this code:<br><br>
+            <span class="highlighted-text big-text center">{{ token }}</span><br><br>
+            at <a href="{{ link }}">{{ link }}</a><br>
+            or click this link to confirm it directly: <a href="{{ linkWithCode }}">{{ linkWithCode }}</a>
+        </p>
+    </div>
+{% endblock %}

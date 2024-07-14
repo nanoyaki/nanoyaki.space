@@ -1,4 +1,4 @@
-{% extends 'login/loggedOutBase.html.twig' %}
+{% extends 'login/logged_out_base.html.twig' %}
 
 {% block title %}Login - nanoyaki.space{% endblock %}
 
@@ -35,6 +35,11 @@
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                 <input type="hidden" name="_target_path" value="/">
             </form>
+            {% if app.request.headers.get('referer') is not same as(url('app_register')) %}
+                <p>Don't have an account? <a href="{{ path('app_register') }}" class="highlighted-text">Register</a></p>
+            {% else %}
+                <a href="{{ path('app_register') }}" class="highlighted-text">Take me back!</a>
+            {% endif %}
         </div>
         <div class="login-background-image">
             <svg viewBox="0 0 100 1080" xmlns="http://www.w3.org/2000/svg">
