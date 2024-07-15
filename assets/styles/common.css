@@ -5,8 +5,9 @@
     --elevated-background-color: #331236;
     --text-color: #F3F1F3;
     --secondary-text-color: #B4A7B4;
-    --warning-text-color: #FF6666;
-    --success-text-color: #7DE87D;
+    --error-color: #FF6666;
+    --warning-color: #FFB266;
+    --success-color: #7DE87D;
     --accent-color: #DA3C97;
     --accent-highlighted-color: #DE54A5;
 

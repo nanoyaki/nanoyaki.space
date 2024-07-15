@@ -9,7 +9,7 @@ when@dev:
                 type: stream
                 path: "%kernel.logs_dir%/%kernel.environment%.log"
                 level: debug
-                channels: ["!event"]
+                channels: ["!event", "!doctrine"]
             # uncomment to get logging in your browser
             # you may have to allow bigger header sizes in your Web server configuration
             #firephp:
@@ -21,7 +21,12 @@ when@dev:
             console:
                 type: console
                 process_psr_3_messages: false
-                channels: ["!event", "!doctrine", "!console"]
+                channels: ["!event", "!doctrine"]
+            sql:
+                type: stream
+                path: '%kernel.logs_dir%/nanoyaki.space.sql.log'
+                level: debug
+                channels: ["doctrine"]
 
 when@test:
     monolog:
@@ -44,6 +49,12 @@ when@prod:
                 type: stream
                 path: '%kernel.logs_dir%/nanoyaki.space.log'
                 level: debug
+                channels: ["!doctrine"]
+            sql:
+                type: stream
+                path: '%kernel.logs_dir%/nanoyaki.space.sql.log'
+                level: debug
+                channels: ["doctrine"]
             console:
                 type: console
                 process_psr_3_messages: false

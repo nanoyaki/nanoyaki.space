@@ -22,7 +22,7 @@ readonly class MailService
         $mail = (new TemplatedEmail())
             ->from(new Address('no-reply@nanoyaki.space', 'Nanoyaki.space'))
             ->to(new Address($user->getEmail(), $user->getUsername()))
-            ->subject("Please confirm your E-Mail")
+            ->subject("Please confirm your email")
             ->htmlTemplate('email/confirm_email.html.twig')
             ->context([
                 'token' => $user->getEmailConfirmation()->getToken()

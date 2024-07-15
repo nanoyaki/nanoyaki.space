@@ -8,15 +8,13 @@ use App\Repository\PostRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route(name: 'app_')]
+#[Route('', name: 'app_')]
 class IndexController extends AbstractController
 {
-    public function __construct(
-        private readonly PostRepository $postRepository
-    ) {}
-
     #[Route('/', name: 'index')]
-    public function index(): Response
+    public function index(
+        PostRepository $postRepository
+    ): Response
     {
         $user = $this->getUser();
 
@@ -40,12 +38,12 @@ class IndexController extends AbstractController
             $posts = [ $post, $post2, $post3 ];
 
             foreach ($posts as $post) {
-                $this->postRepository->save($post);
+                $postRepository->save($post);
             }
         }
 
         return $this->render('index/index.html.twig', [
-            'posts' => $this->postRepository->getTenPosts(),
+            'posts' => $postRepository->getTenPosts(10),
         ]);
     }
 }

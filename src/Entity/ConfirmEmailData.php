@@ -14,7 +14,7 @@ class ConfirmEmailData
         minMessage: self::TOKEN_LENGTH_MESSAGE,
         maxMessage: self::TOKEN_LENGTH_MESSAGE
     )]
-    #[Assert\Regex(pattern: '\d{6}')]
+    #[Assert\Regex(pattern: '/\d{6}/')]
     protected string $token;
 
     public function getToken(): string

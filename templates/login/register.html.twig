@@ -15,9 +15,11 @@
     <main>
         <div class="login-form-container">
             {{ form_start(registerForm) }}
+                <twig:FormError errors="{{ errors }}" />
                 <twig:LabeledInput property="{{ registerForm.username }}" />
                 <twig:LabeledInput property="{{ registerForm.email }}" />
                 <twig:LabeledInput property="{{ registerForm.password }}" />
+                <twig:LabeledInput property="{{ registerForm.passwordConfirmation }}" />
 
                 <twig:Csrf name="register" />
 

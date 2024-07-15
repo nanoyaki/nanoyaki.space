@@ -38,6 +38,12 @@ class RegisterData
     )]
     private string $password;
 
+    #[Assert\EqualTo(
+        propertyPath: 'password',
+        message: "The passwords are not the same"
+    )]
+    private string $passwordConfirmation;
+
     public function getEmail(): string
     {
         return $this->email;
@@ -70,6 +76,18 @@ class RegisterData
     public function setPassword(string $password): static
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    public function getPasswordConfirmation(): string
+    {
+        return $this->passwordConfirmation;
+    }
+
+    public function setPasswordConfirmation(string $passwordConfirmation): static
+    {
+        $this->passwordConfirmation = $passwordConfirmation;
 
         return $this;
     }

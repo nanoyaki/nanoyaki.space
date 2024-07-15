@@ -31,20 +31,22 @@ class AccountController extends AbstractController
         }
 
         if ($user->getEmailConfirmation()->isConfirmed()) {
+            $this->addFlash('warning', 'You have already confirmed your email!');
             return $this->redirectToRoute('app_index');
         }
 
-        $token = $request->query->has('code') ? $request->query->getString('code') : null;
+        $token = $request->query->has('code') ? $request->query->getString('code') : '';
 
         $form = $this->createForm(ConfirmEmailType::class, new ConfirmEmailData());
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var ConfirmEmailData $data */
             $data = $form->getData();
+            assert($data instanceof ConfirmEmailData);
+
             $token = $data->getToken();
         }
 
-        if ($token === null) {
+        if (!$form->isSubmitted()) {
             return $this->render('login/confirm_email.html.twig', [
                 'confirmEmailForm' => $form
             ]);
@@ -54,13 +56,13 @@ class AccountController extends AbstractController
         if ($userEmailConfirmation->tryVerification($token)) {
             $emailConfirmRepository->save($userEmailConfirmation);
 
-            $this->addFlash('success', 'Your email was verified successfully.');
+            $this->addFlash('success', 'Your email was confirmed successfully.');
             return $this->redirectToRoute('app_index');
         }
 
         $this->addFlash(
-            'warning',
-            'The code you entered is incorrect or has expired. Please send a new confirmation mail below.'
+            'error',
+            'The confirmation code you entered is incorrect or has expired. Please send a new confirmation mail below.'
         );
         return $this->render('login/confirm_email.html.twig', [
             'confirmEmailForm' => $form
@@ -85,11 +87,10 @@ class AccountController extends AbstractController
         try {
             $mailService->sendRegistrationConfirmationMail($user);
 
-            // TODO: add proper flashes on the frontend
             $this->addFlash('success', 'Confirmation mail sent!');
         } catch (TransportExceptionInterface) {
             $this->addFlash(
-                'warning',
+                'error',
                 'There was an error trying to send the confirmation mail. ' .
                 'Please try again later.'
             );

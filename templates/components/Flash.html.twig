@@ -1,0 +1,40 @@
+{% for message in app.flashes('error') %}
+    <div class="flash-message flash-failure">
+        <svg xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" viewBox="0 0 24 24">
+            <g fill="none" stroke="#FF6666" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path stroke-linecap="round" d="m14.5 9.5l-5 5m0-5l5 5"></path>
+            </g>
+        </svg>
+        <div>
+            {{ message }}
+        </div>
+    </div>
+{% endfor %}
+{% for message in app.flashes('success') %}
+    <div class="flash-message flash-success">
+        <svg xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" viewBox="0 0 24 24">
+            <g fill="none" stroke="#7DE87D" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path stroke-linecap="round" stroke-linejoin="round" d="m8.5 12.5l2 2l5-5"></path>
+            </g>
+        </svg>
+        <div>
+            {{ message }}
+        </div>
+    </div>
+{% endfor %}
+{% for message in app.flashes('warning') %}
+    <div class="flash-message flash-warning">
+        <svg xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" viewBox="0 0 24 24">
+            <g fill="none">
+                <path stroke="#FFB266" stroke-width="2" d="M3 10.417c0-3.198 0-4.797.378-5.335c.377-.537 1.88-1.052 4.887-2.081l.573-.196C10.405 2.268 11.188 2 12 2c.811 0 1.595.268 3.162.805l.573.196c3.007 1.029 4.51 1.544 4.887 2.081C21 5.62 21 7.22 21 10.417v1.574c0 5.638-4.239 8.375-6.899 9.536C13.38 21.842 13.02 22 12 22s-1.38-.158-2.101-.473C7.239 20.365 3 17.63 3 11.991z"></path>
+                <path stroke="#FFB266" stroke-linecap="round" stroke-width="2" d="M12 8v4"></path>
+                <circle cx="12" cy="15" r="1" fill="#FFB266"></circle>
+            </g>
+        </svg>
+        <div>
+            {{ message }}
+        </div>
+    </div>
+{% endfor %}

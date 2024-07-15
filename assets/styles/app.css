@@ -38,7 +38,18 @@ nav img {
     border-radius: 50%;
 }
 
-body main.multi-part {
+.centered-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+}
+
+.centered-column .flash-message {
+    margin-top: 4rem;
+}
+
+.multi-part {
     gap: 4rem;
     display: flex;
     flex-direction: row;
@@ -74,15 +85,15 @@ button:hover {
     background-color: var(--accent-highlighted-color);
 }
 
-@media (max-width: 1200px) {
+@media (max-aspect-ratio: 10/7) {
     body {
         padding-left: 0;
         padding-right: 0;
     }
 }
 
-@media (max-width: 800px) {
-    body main.multi-part {
+@media (max-aspect-ratio: 10/9) {
+    .multi-part {
         flex-direction: column-reverse;
     }
 
@@ -354,6 +365,10 @@ button:hover {
     align-items: flex-start;
 }
 
+.labeled-input input {
+    text-align: center;
+}
+
 .login-form-container {
     display: flex;
     flex-direction: column;
@@ -364,18 +379,34 @@ button:hover {
     flex-basis: 0;
 }
 
-.login-form-container .flash-message {
+.flash-message {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: center;
     flex-shrink: 1;
-    border-radius: 1rem;
-    background-color: var(--elevated-background-color);
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
 }
 
 .flash-success {
-    color: var(--success-text-color);
+    color: var(--success-color);
 }
 
 .flash-failure {
-    color: var(--warning-text-color);
+    color: var(--error-color);
+}
+
+.flash-warning {
+    color: var(--warning-color);
 }
 
 .login-background-image {

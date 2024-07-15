@@ -3,13 +3,13 @@
 namespace App\Repository;
 
 use App\Entity\EmailConfirmation;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryProxy;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepositoryProxy<EmailConfirmation>
+ * @extends ServiceEntityRepository<EmailConfirmation>
  */
-class EmailConfirmationRepository extends ServiceEntityRepositoryProxy
+class EmailConfirmationRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

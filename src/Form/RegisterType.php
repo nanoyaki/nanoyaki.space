@@ -16,6 +16,7 @@ class RegisterType extends AbstractType
             ->add('email', Type\EmailType::class, [ 'label' => 'Email*' ])
             ->add('username', Type\TextType::class, [ 'label' => 'Username*' ])
             ->add('password', Type\PasswordType::class, [ 'label' => 'Password*' ])
+            ->add('passwordConfirmation', Type\PasswordType::class, [ 'label' => 'Confirm password*' ])
             ->add('register', Type\SubmitType::class, [ 'label' => 'Register' ]);
     }
 

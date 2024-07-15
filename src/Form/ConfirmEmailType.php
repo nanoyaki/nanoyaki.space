@@ -14,12 +14,13 @@ class ConfirmEmailType extends AbstractType
     {
         $builder
             ->add('token', Type\IntegerType::class, [
-                'label' => 'Code',
+                'label' => 'Confirmation code',
                 'attr' => [
                     'placeholder' => '000000',
                     'pattern' => '\\d{6}'
                 ]
-            ]);
+            ])
+            ->add('confirm', Type\SubmitType::class, [ 'label' => 'Confirm' ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

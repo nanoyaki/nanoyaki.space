@@ -3,13 +3,13 @@
 namespace App\Repository;
 
 use App\Entity\Post;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryProxy;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepositoryProxy<Post>
+ * @extends ServiceEntityRepository<Post>
  */
-class PostRepository extends ServiceEntityRepositoryProxy
+class PostRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -22,15 +22,17 @@ class PostRepository extends ServiceEntityRepositoryProxy
      */
     public function getTenPosts(?int $belowId = null): array
     {
+        $qb = $this->createQueryBuilder('p');
+
         if ($belowId !== null) {
-            $qb = $this->createQueryBuilder('p')
+            $qb
                 ->where('p.id < :index')
-                ->setParameter('index', $belowId)
-                ->setMaxResults(10);
-        } else {
-            $qb = $this->createQueryBuilder('p')
-                ->setMaxResults(10);
+                ->setParameter('index', $belowId);
         }
+
+        $qb
+            ->orderBy('p.id', 'DESC')
+            ->setMaxResults(10);
 
         return $qb->getQuery()->getResult();
     }

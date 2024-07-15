@@ -3,13 +3,13 @@
 namespace App\Repository;
 
 use App\Entity\RegisterData;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryProxy;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepositoryProxy<RegisterData>
+ * @extends ServiceEntityRepository<RegisterData>
  */
-class RegisterDataRepository extends ServiceEntityRepositoryProxy
+class RegisterDataRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
