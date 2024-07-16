@@ -8,22 +8,22 @@ use App\Repository\PostRepository;
 use App\Repository\UserRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
-    name: 'test:create-sample-post',
-    description: 'A command to create a post intended for testing purposes',
+    name: 'app:create-sample-post',
+    description: 'A command to create a post',
 )]
 class TestCreateSamplePostCommand extends Command
 {
     private const AUTHOR = 'author';
     private const TITLE = 'title';
+    private const DIGEST = 'digest';
     private const CONTENT = 'content';
-
-    private const LOREM_IPSUM = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.';
 
     public function __construct(
         private readonly PostRepository $postRepository,
@@ -38,24 +38,25 @@ class TestCreateSamplePostCommand extends Command
         $this
             ->addOption(
                 self::AUTHOR,
-                substr(self::AUTHOR, 0, 1),
+                'u',
                 InputOption::VALUE_OPTIONAL,
                 'The username of the user to use a test author',
-                'nanoyaki'
+                'nano'
             )
-            ->addOption(
+            ->addArgument(
                 self::TITLE,
-                substr(self::TITLE, 0, 1),
-                InputOption::VALUE_OPTIONAL,
-                'The title to use for the test post',
-                'This is a test title'
+                InputArgument::REQUIRED,
+                'The title to use for the test post'
             )
-            ->addOption(
+            ->addArgument(
+                self::DIGEST,
+                InputArgument::REQUIRED,
+                'The digest to use for the post preview'
+            )
+            ->addArgument(
                 self::CONTENT,
-                substr(self::CONTENT, 0, 1),
-                InputOption::VALUE_OPTIONAL,
-                'The content and digest to use for the test post',
-                self::LOREM_IPSUM
+                InputArgument::REQUIRED,
+                'The content to use for the test post'
             );
     }
 
@@ -69,14 +70,20 @@ class TestCreateSamplePostCommand extends Command
             return Command::FAILURE;
         }
 
-        $inputTitle = $input->getOption(self::TITLE);
+        $inputTitle = $input->getArgument(self::TITLE);
         if (!is_string($inputTitle)) {
             $io->error('The title must be a string');
             return Command::FAILURE;
         }
 
-        $inputContent = $input->getOption(self::CONTENT);
+        $inputContent = $input->getArgument(self::CONTENT);
         if (!is_string($inputContent)) {
+            $io->error('The title must be a string');
+            return Command::FAILURE;
+        }
+
+        $inputDigest = $input->getArgument(self::DIGEST);
+        if (!is_string($inputDigest)) {
             $io->error('The title must be a string');
             return Command::FAILURE;
         }
@@ -91,7 +98,8 @@ class TestCreateSamplePostCommand extends Command
             $testAuthor,
             $inputTitle,
             $inputContent,
-            $inputContent
+            $inputDigest,
+            true
         );
 
         $this->postRepository->save($post);

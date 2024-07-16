@@ -34,7 +34,6 @@ class LoginController extends AbstractController
     {
         $form = $this->createForm(RegisterType::class, new RegisterData());
 
-        $errors = null;
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
@@ -61,13 +60,10 @@ class LoginController extends AbstractController
             }
 
             return $this->redirectToRoute('app_account_confirm_email');
-        } elseif ($form->isSubmitted() && !$form->isValid()) {
-            $errors = $form->getErrors(true);
         }
 
         return $this->render('login/register.html.twig', [
             'registerForm' => $form,
-            'errors' => $errors,
         ]);
     }
 }

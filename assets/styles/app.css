@@ -45,14 +45,7 @@ nav img {
     border-radius: 50%;
 }
 
-.centered-column {
-    display: flex;
-    flex-direction: column;
-    justify-content: start;
-    align-items: center;
-}
-
-.centered-column .flash-message {
+main .flash-message {
     margin-top: 4rem;
 }
 
@@ -63,6 +56,8 @@ nav img {
     justify-content: center;
     padding: 4rem;
     flex-grow: 1;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 input {

@@ -14,8 +14,8 @@
 {% block body %}
     <main>
         <div class="login-form-container">
+            <twig:Flash />
             {{ form_start(registerForm) }}
-                <twig:FormError errors="{{ errors }}" />
                 <twig:LabeledInput property="{{ registerForm.username }}" />
                 <twig:LabeledInput property="{{ registerForm.email }}" />
                 <twig:LabeledInput property="{{ registerForm.password }}" />
