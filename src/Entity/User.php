@@ -50,7 +50,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         private string                     $username,
         #[ORM\Column(length: 180)]
         private string                     $email,
-        #[ORM\OneToOne(targetEntity: Image::class, cascade: ['persist', 'remove'])]
+        #[ORM\ManyToOne(targetEntity: Image::class, cascade: ['persist', 'remove'])]
         #[ORM\JoinColumn(name: 'profile_picture_id', referencedColumnName: 'id')]
         private Image                      $profilePicture,
         #[ORM\Column]
@@ -169,6 +169,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getEmailConfirmation(): EmailConfirmation
     {
         return $this->emailConfirmation;
+    }
+
+    public function setProfilePicture(Image $image): self
+    {
+        $this->profilePicture = $image;
+
+        return $this;
     }
 
     public function getProfilePicture(): Image
