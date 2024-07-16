@@ -1,6 +1,6 @@
 {% extends 'email/base.html.twig' %}
 
-{% set baseUrl = 'https://' ~ app.environment is same as 'dev' ? 'dev.nanoyaki.space' : 'nanoyaki.space' %}
+{% set baseUrl = 'https://' ~ (app.environment == 'dev' ? 'dev.nanoyaki.space' : 'nanoyaki.space') %}
 {% set linkWithCode = baseUrl ~ path('app_account_confirm_email', { code: token }) %}
 {% set link = baseUrl ~ path('app_account_confirm_email', {}) %}
 

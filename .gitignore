@@ -31,3 +31,5 @@ phpstan.neon
 ###< phpstan/phpstan ###
 
 .idea
+
+assets/images/profilePictures/nano.png

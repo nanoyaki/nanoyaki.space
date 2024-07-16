@@ -1,6 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello BlogPostController!{% endblock %}
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block meta_description %}{{ post.digest }}{% endblock %}
 
 {% block body %}
     <div class="post">
