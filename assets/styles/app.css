@@ -549,6 +549,10 @@ main {
     margin-bottom: 1rem;
 }
 
+.post-content p:last-child {
+    margin-bottom: 0;
+}
+
 .post-content a {
     text-decoration: inherit;
     color: var(--accent-color);
