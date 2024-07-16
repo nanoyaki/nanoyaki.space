@@ -17,7 +17,9 @@
             <link rel="icon" href="{{ asset('images/favicon.ico') }}" type="image/x-icon" />
             <meta property="og:title" content="{{ block('title') }}" />
             <meta property="og:type" content="website" />
-            <meta property="og:url" content="{{ url(app.request.attributes.get('_route')) }}" />
+            <meta property="og:url"
+                  content="{{ url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}"
+            />
             <meta property="og:image" content="{{ asset('images/profilePictures/nano.png') }}" />
             <meta property="og:description"
                   content="
