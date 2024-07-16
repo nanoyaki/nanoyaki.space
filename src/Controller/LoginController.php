@@ -3,14 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\RegisterData;
-use App\Entity\User;
+use App\Exception\UserExistsException;
 use App\Form\RegisterType;
-use App\Repository\UserRepository;
-use App\Service\MailService;
+use App\Service\UserService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
@@ -31,9 +29,7 @@ class LoginController extends AbstractController
     #[Route('/register', name: 'register')]
     public function register(
         Request $request,
-        UserRepository $userRepository,
-        UserPasswordHasherInterface $passwordHasher,
-        MailService $mailService
+        UserService $userService
     ): Response
     {
         $form = $this->createForm(RegisterType::class, new RegisterData());
@@ -44,24 +40,24 @@ class LoginController extends AbstractController
             $data = $form->getData();
             assert($data instanceof RegisterData);
 
-            if ($userRepository->userExists($data->getEmail(), $data->getUsername())) {
+            try {
+                $userService->registerUser($data);
+            } catch (UserExistsException) {
                 $this->addFlash('error', 'A user with that email or username already exists');
+
                 return $this->render('login/register.html.twig', [
                     'registerForm' => $form
                 ]);
-            }
-
-            $newUser = User::register($data, $passwordHasher);
-            $userRepository->save($newUser);
-
-            try {
-                $mailService->sendRegistrationConfirmationMail($newUser);
             } catch (TransportExceptionInterface) {
                 $this->addFlash(
                     'error',
                     'There was an error trying to send the confirmation mail. ' .
                     'Please try again later.'
                 );
+
+                return $this->render('login/register.html.twig', [
+                    'registerForm' => $form
+                ]);
             }
 
             return $this->redirectToRoute('app_account_confirm_email');

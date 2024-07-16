@@ -17,17 +17,17 @@ class PostRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param ?int $belowId
+     * @param ?int $index
      * @return array<Post>
      */
-    public function getTenPosts(?int $belowId = null): array
+    public function getTenPosts(?int $index = null): array
     {
         $qb = $this->createQueryBuilder('p');
 
-        if ($belowId !== null) {
+        if ($index !== null) {
             $qb
                 ->where('p.id < :index')
-                ->setParameter('index', $belowId);
+                ->setParameter('index', $index);
         }
 
         $qb

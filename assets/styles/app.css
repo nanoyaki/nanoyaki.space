@@ -1,4 +1,11 @@
+html {
+    height: auto;
+}
+
 body {
+    display: flex;
+    flex-direction: column;
+    height: auto;
     padding-left: 8rem;
     padding-right: 8rem;
     background-color: var(--background-color);
@@ -11,7 +18,7 @@ nav {
     max-height: 4rem;
     min-width: auto;
     display: flex;
-    padding: 1rem;
+    padding: 0.75rem;
     gap: 1rem;
     flex-direction: row;
     align-items: center;
@@ -170,7 +177,6 @@ button:hover {
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    font-size: 0.625rem;
     color: var(--secondary-text-color);
 }
 
@@ -474,15 +480,28 @@ input[type=number] {
     padding: 0;
 }
 
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    flex-grow: 1;
+}
+
 .post {
+    margin: 4rem auto;
     display: flex;
     flex-direction: column;
     justify-content: start;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: auto;
     align-items: center;
     max-width: 60rem;
-    border-top-left-radius: 1rem;
-    border-top-right-radius: 1rem;
+    border-radius: 1rem;
     background-color: var(--elevated-background-color);
+    padding: 1rem;
+    overflow-x: hidden;
 }
 
 .post h3 {
@@ -493,7 +512,46 @@ input[type=number] {
 .post-metadata {
     display: flex;
     flex-direction: column;
+    flex-shrink: 1;
+    flex-basis: 0;
+    gap: 0.5rem;
+    padding: 1rem;
+    min-width: 100%;
+    box-sizing: border-box;
+}
+
+.top-metadata {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
     flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 0;
+    gap: 1rem;
+}
+
+.top-metadata a {
+    display: grid;
+}
+
+.top-metadata .edit-button {
+    margin-left: auto;
+}
+
+.post hr {
+    min-width: 100%;
+}
+
+.post-content {
+    padding: 1rem;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: auto;
+}
+
+.post-content p {
+    margin-bottom: 1rem;
 }
 
 a.highlighted-text:link {

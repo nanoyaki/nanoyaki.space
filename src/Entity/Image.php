@@ -20,13 +20,13 @@ class Image
     public function __construct(
         #[ORM\Column(length: 255)]
         private string $path,
-        #[ORM\Column(length: 255)]
-        private string $description,
         #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'images')]
         #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id')]
-        private readonly User $user,
+        private readonly ?User $user = null,
+        #[ORM\Column(length: 255)]
+        private string $description = "",
         #[ORM\Column]
-        private bool $isUrl
+        private bool $isUrl = false
     ) {
         $this->uploadDate = new DateTimeImmutable();
     }
@@ -41,7 +41,7 @@ class Image
         return $this->uploadDate;
     }
 
-    public function getPath(): ?string
+    public function getPath(): string
     {
         return $this->path;
     }
@@ -53,7 +53,7 @@ class Image
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getDescription(): string
     {
         return $this->description;
     }
@@ -65,7 +65,7 @@ class Image
         return $this;
     }
 
-    public function getUser(): User
+    public function getUser(): ?User
     {
         return $this->user;
     }

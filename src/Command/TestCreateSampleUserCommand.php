@@ -5,7 +5,7 @@ namespace App\Command;
 use App\Entity\RegisterData;
 use App\Entity\User;
 use App\Enums\Role;
-use App\Repository\EmailConfirmationRepository;
+use App\Repository\ImageRepository;
 use App\Repository\UserRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -27,8 +27,9 @@ class TestCreateSampleUserCommand extends Command
     private const ADMIN = 'is-admin';
 
     public function __construct(
-        private readonly UserRepository $userRepository,
-        private readonly UserPasswordHasherInterface $passwordHasher
+        private readonly UserRepository              $userRepository,
+        private readonly UserPasswordHasherInterface $passwordHasher,
+        private readonly ImageRepository             $imageRepository
     )
     {
         parent::__construct();
@@ -76,7 +77,7 @@ class TestCreateSampleUserCommand extends Command
             return Command::FAILURE;
         }
 
-        if ($this->userRepository->userExists($email, $username)) {
+        if ($this->userRepository->getUserByEmailAndUsername($email, $username) instanceof User) {
             $io->error('That user already exists!');
             return Command::FAILURE;
         }
@@ -91,6 +92,7 @@ class TestCreateSampleUserCommand extends Command
         $user = User::register(
             $registerData,
             $this->passwordHasher,
+            $this->imageRepository->getDefaultUserProfilePicture(),
             $isAdmin ? [ Role::Admin ] : []
         );
 

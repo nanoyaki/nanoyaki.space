@@ -1,0 +1,36 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Method App\\\\Controller\\\\UrlShortenerController\\:\\:addRoute\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Controller/UrlShortenerController.php
+
+		-
+			message: "#^Method App\\\\Controller\\\\UrlShortenerController\\:\\:addUserRoute\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Controller/UrlShortenerController.php
+
+		-
+			message: "#^Method App\\\\Controller\\\\UrlShortenerController\\:\\:deleteRoute\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Controller/UrlShortenerController.php
+
+		-
+			message: "#^Method App\\\\Controller\\\\UrlShortenerController\\:\\:editRoute\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Controller/UrlShortenerController.php
+
+		-
+			message: "#^Method App\\\\Controller\\\\UrlShortenerController\\:\\:handleGlobalRedirect\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Controller/UrlShortenerController.php
+
+		-
+			message: "#^Method App\\\\Controller\\\\UrlShortenerController\\:\\:handleUserRedirect\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Controller/UrlShortenerController.php
+
+		-
+			message: "#^Method App\\\\Controller\\\\UrlShortenerController\\:\\:index\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: src/Controller/UrlShortenerController.php

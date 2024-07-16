@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use App\Entity\ConfirmEmailData;
 use App\Entity\User;
+use App\Exception\EmailAlreadyConfirmedException;
+use App\Exception\EmailConfirmationInvalidTokenException;
 use App\Form\ConfirmEmailType;
-use App\Repository\EmailConfirmationRepository;
 use App\Service\MailService;
+use App\Service\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,19 +25,14 @@ class AccountController extends AbstractController
     }
 
     #[Route('/confirm-email', name: 'confirm_email')]
-    public function confirmEmail(Request $request, EmailConfirmationRepository $emailConfirmRepository): Response
+    public function confirmEmail(Request $request, UserService $userService): Response
     {
         $user = $this->getUser();
         if (!$user instanceof User) {
             return $this->redirectToRoute('app_login');
         }
 
-        if ($user->getEmailConfirmation()->isConfirmed()) {
-            $this->addFlash('warning', 'You have already confirmed your email!');
-            return $this->redirectToRoute('app_index');
-        }
-
-        $token = $request->query->has('code') ? $request->query->getString('code') : '';
+        $token = $request->query->has('code') ? $request->query->getString('code') : null;
 
         $form = $this->createForm(ConfirmEmailType::class, new ConfirmEmailData());
         $form->handleRequest($request);
@@ -46,43 +43,40 @@ class AccountController extends AbstractController
             $token = $data->getToken();
         }
 
-        if (!$form->isSubmitted()) {
+        if ($token === null) {
             return $this->render('login/confirm_email.html.twig', [
                 'confirmEmailForm' => $form
             ]);
         }
 
-        $userEmailConfirmation = $user->getEmailConfirmation();
-        if ($userEmailConfirmation->tryVerification($token)) {
-            $emailConfirmRepository->save($userEmailConfirmation);
-
-            $this->addFlash('success', 'Your email was confirmed successfully.');
+        try {
+            $userService->confirmEmailForUser($user, $token);
+        } catch (EmailAlreadyConfirmedException) {
+            $this->addFlash('warning', 'You have already confirmed your email!');
             return $this->redirectToRoute('app_index');
+        } catch (EmailConfirmationInvalidTokenException) {
+            $this->addFlash(
+                'error',
+                'The confirmation code you entered is incorrect or has expired. Please send a new confirmation mail below.'
+            );
+            return $this->render('login/confirm_email.html.twig', [
+                'confirmEmailForm' => $form
+            ]);
         }
 
-        $this->addFlash(
-            'error',
-            'The confirmation code you entered is incorrect or has expired. Please send a new confirmation mail below.'
-        );
-        return $this->render('login/confirm_email.html.twig', [
-            'confirmEmailForm' => $form
-        ]);
+        $this->addFlash('success', 'Your email was confirmed successfully.');
+        return $this->redirectToRoute('app_index');
     }
 
     #[Route('/resend-confirmation-mail', 'resend_confirmation_email')]
     public function resendConfirmationMail(
-        MailService $mailService,
-        EmailConfirmationRepository $emailConfirmationRepository
+        MailService $mailService
     ): Response
     {
         $user = $this->getUser();
         if (!$user instanceof User) {
             return $this->redirectToRoute('app_login');
         }
-
-        $emailConfirmationRepository->save(
-            $user->getEmailConfirmation()->regenerateToken()
-        );
 
         try {
             $mailService->sendRegistrationConfirmationMail($user);

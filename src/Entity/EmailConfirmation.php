@@ -63,12 +63,12 @@ class EmailConfirmation
      */
     public function tryVerification(string $token): bool
     {
-        $this->isConfirmed = $token === $this->token && !$this->isTokenExpired();
+        $this->isConfirmed = !$this->isTokenExpired() ? $token === $this->token : $this->isConfirmed;
 
         return $this->isConfirmed;
     }
 
-    private function isTokenExpired(): bool
+    public function isTokenExpired(): bool
     {
         return $this->validUntil->getTimestamp() < (new DateTimeImmutable())->getTimestamp() && !$this->isConfirmed;
     }

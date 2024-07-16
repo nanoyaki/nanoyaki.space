@@ -19,6 +19,17 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
+            - '../src/Exception/'
 
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
+    # I have no idea whether this is best practice, but it works and seems fine to me
+    default_profile_picture:
+        class: App\Entity\Image
+        autoconfigure: false
+        autowire: false
+        arguments:
+            $path: 'images/profilePictures/default.png'
+            $description: 'Default profile picture'
+
+    App\Repository\ImageRepository:
+        calls:
+            - setDefaultUserProfilePicture: ['@default_profile_picture']

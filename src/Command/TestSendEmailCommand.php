@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Entity\User;
+use App\Repository\ImageRepository;
 use App\Repository\UserRepository;
 use App\Service\MailService;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -28,7 +29,8 @@ class TestSendEmailCommand extends Command
     public function __construct(
         private readonly MailService $mailService,
         private readonly ValidatorInterface $validator,
-        private readonly UserRepository $userRepository
+        private readonly UserRepository $userRepository,
+        private readonly ImageRepository $imageRepository
     )
     {
         parent::__construct();
@@ -66,7 +68,7 @@ class TestSendEmailCommand extends Command
 
         $user = $input->getOption(self::IS_USER)
             ? $this->userRepository->getUserByEmailAddress($receiverEmail)
-            : new User('Test User', $receiverEmail);
+            : new User('Test User', $receiverEmail, $this->imageRepository->getDefaultUserProfilePicture());
         if (!$user instanceof User) {
             $io->error('User for that Email was not found!');
             return Command::FAILURE;

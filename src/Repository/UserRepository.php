@@ -56,20 +56,15 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getOneOrNullResult();
     }
 
-    public function userExists(string $email, ?string $username = null): bool
+    public function getUserByEmailAndUsername(string $email, string $username): ?User
     {
         $qb = $this->createQueryBuilder('u')
             ->where('u.email = :email')
-            ->setParameter('email', $email);
+            ->setParameter('email', $email)
+            ->orWhere('u.username = :username')
+            ->setParameter('username', $username);
 
-        if ($username !== null) {
-            $qb = $qb
-                ->orWhere('u.username = :username')
-                ->setParameter('username', $username);
-        }
-
-        $user = $qb->getQuery()->getOneOrNullResult();
-        return $user instanceof User;
+        return $qb->getQuery()->getOneOrNullResult();
     }
 
     public function save(User $user): void

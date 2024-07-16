@@ -9,4 +9,5 @@ final class PostDate
 {
     public \DateTimeImmutable $created;
     public ?\DateTimeInterface $modified = null;
+    public string $size = "0.75rem";
 }

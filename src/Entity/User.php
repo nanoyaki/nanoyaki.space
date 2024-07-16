@@ -42,6 +42,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @param string $username
      * @param string $email
+     * @param Image $profilePicture
      * @param array<string> $roles
      */
     public function __construct(
@@ -49,6 +50,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         private string                     $username,
         #[ORM\Column(length: 180)]
         private string                     $email,
+        #[ORM\OneToOne(targetEntity: Image::class, cascade: ['persist', 'remove'])]
+        #[ORM\JoinColumn(name: 'profile_picture_id', referencedColumnName: 'id')]
+        private Image                      $profilePicture,
         #[ORM\Column]
         private array                      $roles = []
     ) {
@@ -167,19 +171,31 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->emailConfirmation;
     }
 
+    public function getProfilePicture(): Image
+    {
+        return $this->profilePicture;
+    }
+
     /**
      * @param RegisterData $registerData
      * @param UserPasswordHasherInterface $passwordHasher
+     * @param Image $profilePicture
      * @param array<Role> $roles
      * @return self
      */
-    public static function register(RegisterData $registerData, UserPasswordHasherInterface $passwordHasher, array $roles = []): self
+    public static function register(
+        RegisterData $registerData,
+        UserPasswordHasherInterface $passwordHasher,
+        Image $profilePicture,
+        array $roles = []
+    ): self
     {
         $roles = array_map(fn (Role $role) => $role->value, $roles);
 
         $user = new self(
             $registerData->getUsername(),
             $registerData->getEmail(),
+            $profilePicture,
             $roles
         );
 

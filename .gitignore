@@ -24,7 +24,6 @@ phpunit.xml
 ###> symfony/asset-mapper ###
 public/assets/
 assets/vendor/
-assets/images/
 ###< symfony/asset-mapper ###
 
 ###> phpstan/phpstan ###
