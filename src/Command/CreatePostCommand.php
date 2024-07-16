@@ -18,7 +18,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
     name: 'app:create-sample-post',
     description: 'A command to create a post',
 )]
-class TestCreateSamplePostCommand extends Command
+class CreatePostCommand extends Command
 {
     private const AUTHOR = 'author';
     private const TITLE = 'title';

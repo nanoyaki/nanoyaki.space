@@ -4,9 +4,9 @@ then
 fi
 
 cd /var/www/"$PROJECT_DIR" || exit 1
-sudo chown -R caddy:caddy .
 sudo rm -r var/cache/*
 sudo rm -r public/assets/*
+sudo chown -R caddy:caddy .
 sudo -u caddy -s \
 php8.3 bin/console asset-map:compile && \
 php8.3 bin/console cache:clear && \
