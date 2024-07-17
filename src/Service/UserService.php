@@ -2,11 +2,14 @@
 
 namespace App\Service;
 
+use App\Entity\BlockedEmail;
 use App\Entity\RegisterData;
 use App\Entity\User;
 use App\Exception\EmailAlreadyConfirmedException;
+use App\Exception\EmailBlockedException;
 use App\Exception\EmailConfirmationInvalidTokenException;
 use App\Exception\UserExistsException;
+use App\Repository\BlockedEmailRepository;
 use App\Repository\EmailConfirmationRepository;
 use App\Repository\ImageRepository;
 use App\Repository\UserRepository;
@@ -20,15 +23,22 @@ readonly class UserService
         private UserPasswordHasherInterface $passwordHasher,
         private MailService                 $mailService,
         private EmailConfirmationRepository $emailConfirmationRepository,
-        private ImageRepository             $imageRepository
+        private ImageRepository             $imageRepository,
+        private BlockedEmailRepository      $blockedEmailRepository
     ) {}
 
     /**
      * @throws UserExistsException
      * @throws TransportExceptionInterface
+     * @throws EmailBlockedException
      */
     public function registerUser(RegisterData $data): void
     {
+        $blockedEmail = $this->blockedEmailRepository->findOneByEmail($data->getEmail());
+        if ($blockedEmail instanceof BlockedEmail) {
+            throw new EmailBlockedException(blockedEmail: $blockedEmail);
+        }
+
         $existingUser = $this->userRepository->getUserByEmailAndUsername($data->getEmail(), $data->getUsername());
         if ($existingUser instanceof User) {
             throw new UserExistsException(user: $existingUser);

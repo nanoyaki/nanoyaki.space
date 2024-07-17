@@ -48,7 +48,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct(
         #[ORM\Column(length: 32)]
         private string                     $username,
-        #[ORM\Column(length: 180)]
+        #[ORM\Column(length: 320)]
         private string                     $email,
         #[ORM\ManyToOne(targetEntity: Image::class, cascade: ['persist', 'remove'])]
         #[ORM\JoinColumn(name: 'profile_picture_id', referencedColumnName: 'id')]

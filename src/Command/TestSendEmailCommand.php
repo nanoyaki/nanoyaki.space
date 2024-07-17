@@ -13,7 +13,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -76,7 +75,7 @@ class TestSendEmailCommand extends Command
 
         try {
             $this->mailService->sendRegistrationConfirmationMail($user);
-        } catch (TransportExceptionInterface $e) {
+        } catch (\Throwable $e) {
             $io->error($e->getMessage());
             return Command::FAILURE;
         }

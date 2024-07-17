@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\RegisterData;
+use App\Exception\EmailBlockedException;
 use App\Exception\UserExistsException;
 use App\Form\RegisterType;
 use App\Service\UserService;
@@ -51,8 +52,14 @@ class LoginController extends AbstractController
                 $this->addFlash(
                     'error',
                     'There was an error trying to send the confirmation mail. ' .
-                    'Please try again later.'
+                    'Please try again later'
                 );
+
+                return $this->render('login/register.html.twig', [
+                    'registerForm' => $form
+                ]);
+            } catch (EmailBlockedException) {
+                $this->addFlash('error', 'The provided email is on the unsubscribe list');
 
                 return $this->render('login/register.html.twig', [
                     'registerForm' => $form

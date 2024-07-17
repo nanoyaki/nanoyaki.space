@@ -3,6 +3,7 @@
 {% set baseUrl = 'https://' ~ (app.environment == 'dev' ? 'dev.nanoyaki.space' : 'nanoyaki.space') %}
 {% set linkWithCode = baseUrl ~ path('app_account_confirm_email', { code: token }) %}
 {% set link = baseUrl ~ path('app_account_confirm_email', {}) %}
+{% set unsubscribeUrl = baseUrl ~ path('app_unsubscribe') %}
 
 {% block content %}
     <div class="email-part">
@@ -13,7 +14,8 @@
             To confirm your email, please enter this code:<br><br>
             <span class="highlighted-text big-text center">{{ token }}</span><br><br>
             at <a href="{{ link }}">{{ link }}</a><br>
-            or click this link to confirm it directly: <a href="{{ linkWithCode }}">{{ linkWithCode }}</a>
+            or click this link to confirm it directly: <a href="{{ linkWithCode }}">{{ linkWithCode }}</a><br><br>
+            <a href="{{ unsubscribeUrl }}">Unsubscribe</a>
         </p>
     </div>
 {% endblock %}
