@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\ConfirmEmailData;
 use App\Entity\User;
 use App\Exception\EmailAlreadyConfirmedException;
+use App\Exception\EmailBlockedException;
 use App\Exception\EmailConfirmationInvalidTokenException;
 use App\Form\ConfirmEmailType;
 use App\Service\MailService;
@@ -87,6 +88,12 @@ class AccountController extends AbstractController
                 'error',
                 'There was an error trying to send the confirmation mail. ' .
                 'Please try again later.'
+            );
+        } catch (EmailBlockedException $e) {
+            $this->addFlash(
+                'error',
+                'Cannot send any mails to that email as it has unsubscribed. ' .
+                'If you believe that is an error, please contact an admin'
             );
         }
 
